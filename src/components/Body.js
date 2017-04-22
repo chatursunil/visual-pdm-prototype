@@ -9,7 +9,7 @@ import Processplan from './Processplan';
 import Other from './Other';
 
 const Body = () => (
-    <div>
+    <div style={{textAlign: 'center'}}>
         <h2>Body Component</h2>
         <Switch>
             <Route exact path='/' component={Home} />
