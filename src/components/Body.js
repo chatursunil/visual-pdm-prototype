@@ -8,9 +8,11 @@ import Bom from './Bom';
 import Processplan from './Processplan';
 import Other from './Other';
 
+import '../styles/Body.css';
+
 const Body = () => (
-    <div style={{textAlign: 'center'}}>
-        <h2>Body Component</h2>
+    <div className="body-container">
+        {/*<h2>Body Component</h2>*/}
         <Switch>
             <Route exact path='/' component={Home} />
             <Route path='/drawing' component={Drawing} />

@@ -1,9 +1,15 @@
-import React from 'react';
+import React, {Component} from 'react';
 
-const Drawing = () => (
-    <div>
-        <h4>Drawing component</h4>
-    </div>
-);
+import '../styles/Drawing.css';
+
+class Drawing extends Component{
+    render() {
+        return(
+            <div className="drawing-container">
+                <iframe src="http://n-cdt-sc:9000/" frameBorder="0"></iframe>
+            </div>
+        );
+    }
+}
 
 export default Drawing;
