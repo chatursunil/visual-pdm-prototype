@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import Body from './Body';
 
+import '../styles/Layout.css';
+
 class Header extends Component {
     showFeatureUnderConstruction() {
         alert('This feature is under construction');

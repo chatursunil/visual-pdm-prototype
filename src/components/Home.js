@@ -1,8 +1,12 @@
 import React from 'react';
 
+import InputPartRev from './InputPartRev';
+
+import '../styles/Home.css';
+
 const Home = () => (
-    <div>
-        <h4>Home component</h4>
+    <div className="inputpartrev-container">
+        <InputPartRev />
     </div>
 );
 

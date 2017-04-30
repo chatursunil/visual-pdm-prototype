@@ -16,5 +16,8 @@
     "server"
   ],
   "author": "Sunil Chaturvedi",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "mssql": "^4.0.4"
+  }
 }
