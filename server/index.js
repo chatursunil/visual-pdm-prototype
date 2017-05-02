@@ -50,6 +50,17 @@ app.get('/suggestitems/:prefix', (req, res) => {
     });
 })
 
+// Route for returning all available revs for the selected part
+app.get('/revsforpart/:part', (req, res) => {
+    const part = req.params.part;
+    getItems.getRevsForPart(part).then((result) => {
+        res.status(200).json(result.recordset);
+    }).catch((err) => {
+        console.log('Error getting revs for part ' + part, err);
+        res.status(500).json([]);
+    });
+})
+
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });

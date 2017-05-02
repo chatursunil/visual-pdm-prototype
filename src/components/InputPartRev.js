@@ -1,8 +1,13 @@
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
+import renderHTML from 'react-render-html';
 
 import '../styles/InputPartRev.css';
-const fetch_url = 'http://n-cdt-sc:9000/suggestitems';
+import downArrow from '../images/down_arrow_48.png';
+
+const server_url = 'http://n-cdt-sc:9000';
+const fetch_url_items = server_url + '/suggestitems';
+const fetch_url_revs = server_url + '/revsforpart';
 
 /* ---------- */
 /*    Data    */
@@ -104,14 +109,19 @@ function renderSuggestion(suggestion) {
 }
 
 class InputPartRev extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
+      partNumber: '',
+      revLetter: '',
       value: '',
-      suggestions: []
+      suggestions: [],
+      revDisabled: true,
+      revOptions: [],
+      currentRev: ''
     };
-    
+
     // this.lastRequestId = null;
   }
   
@@ -122,7 +132,7 @@ class InputPartRev extends React.Component {
       return;
     }
     //  Now let's fetch the suggestions from the server
-    fetch(`${fetch_url}/${value}`)
+    fetch(`${fetch_url_items}/${value}`)
       .then((res) => {
         if (res.ok) {
           res.json().then((data) => {
@@ -145,8 +155,11 @@ class InputPartRev extends React.Component {
 
   onChange = (event, { newValue }) => {
     this.setState({
-      value: newValue
+      value: newValue,
     });
+    if (newValue.trim().length === 0) {
+      this.setState({revDisabled: true});
+    }
   };
     
   onSuggestionsFetchRequested = ({ value }) => {
@@ -169,23 +182,88 @@ class InputPartRev extends React.Component {
   }
 
   handleKeyDown = (e) => {
-    if (e.keyCode === 13) {
+    if (e.keyCode === 13 || e.keyCode === 9) {
       e.preventDefault();
       e.stopPropagation();
       this.handlePartNumberConfirmed(this.state.value);
+      this.refs.revInput.focus();
     }
   }
 
   handlePartNumberConfirmed = (partNumber) => {
     // This code will be invoked when user presses enter after
     // either entering the partnumber or after selecting from the suggestions
-    console.log(`Part Number=${partNumber}`);
+    this.setState({partNumber}, () => {
+      this.setState({revDisabled: partNumber.length > 0 ? false : true});
+      this.propagatePartRevToParents();
+    });
+    this.loadRevs(partNumber);
+  }
+
+  propagatePartRevToParents = () => {
+    // console.log(`this.state.partNumber=${this.state.partNumber}`);
+    this.props.setCurrentPartRevOnParent(this.state.partNumber, this.state.revLetter);
+  }
+
+  // ************* Rev related functions below
+  onRevChange = (e) => {
+    this.setState({revLetter: e.target.value}, () => {
+      this.propagatePartRevToParents();
+    });
+  }
+
+  makeSelectDisabled = (arg) => {
+    return arg ? 'disabled' : '';
+  }
+
+  loadRevs = (part) => {
+    fetch(`${fetch_url_revs}/${part}`)
+      .then((res) => {
+        if (res.ok) {
+          res.json().then((data) => {
+            this.setState({revOptions: data}, () => {
+              if (data.length > 0) {
+                this.setState({
+                  currentRev: data[0].CURRENTREV,
+                  revLetter: data[0].CURRENTREV
+                }, () => {
+                  this.propagatePartRevToParents();
+                });
+              }
+            });
+          });
+        } else {
+          this.setState({revOptions: []});
+        }
+      }).catch((err) => {
+        this.setState({revOptions: []});
+      });
+  }
+
+  renderRevOptions = () => {
+    const revOptions = this.state.revOptions;
+    let retText = '';
+    // let selectedValue = '';
+    if (revOptions.length > 0) {
+      // selectedValue = revOptions[0].CURRENTREV;
+      revOptions.forEach((option) => {
+        retText += `<option value="${option.REV}">${option.REV}</option>`;
+      });
+    }
+    // Since this method is called during render, we cannot setState at this point
+    // This is because the setState causes another render which leads to an infinite call to render
+    // As a result you will receive the following error:
+    // reactjs cannot update during an existing state transition
+    // So we need to set this state in a different place.
+    // this.setState({currentRev: selectedValue});
+    return retText;
   }
 
   render() {
     const { value, suggestions} = this.state;
     const inputProps = {
       placeholder: "Enter Part Number",
+      autoFocus: true,
       value,
       onChange: this.onChange,
       onKeyDown: this.handleKeyDown
@@ -193,17 +271,33 @@ class InputPartRev extends React.Component {
     
     return (
       <div>
-        {/*<div className="status">
-          <strong>Status:</strong> {status}
-        </div>*/}
-        <Autosuggest 
-          suggestions={suggestions}
-          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-          onSuggestionSelected={this.onSuggestionSelected}
-          getSuggestionValue={getSuggestionValue}
-          renderSuggestion={renderSuggestion}
-          inputProps={inputProps} />
+        <div style={{float: 'left'}}>
+          {/*<div className="status">
+            <strong>Status:</strong> {status}
+          </div>*/}
+          <Autosuggest 
+            ref="partInput"
+            suggestions={suggestions}
+            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+            onSuggestionSelected={this.onSuggestionSelected}
+            getSuggestionValue={getSuggestionValue}
+            renderSuggestion={renderSuggestion}
+            inputProps={inputProps} />
+          </div>
+
+          {/*<div style={{float: 'left', width:'20px'}}>&nbsp;</div>*/}
+
+          <div style={{float: 'left'}}>
+            <select disabled={this.state.revDisabled}
+              value={this.state.revLetter.length > 0 ? this.state.revLetter : this.state.currentRev}              
+              ref="revInput"
+              style={{background: `url(${downArrow}) 96% / 15% no-repeat #fff`}}             
+              onChange={this.onRevChange}>
+                <option value="" disabled>Select Rev</option>
+                {renderHTML(this.renderRevOptions())}
+            </select>
+          </div>
       </div>
     );
   }

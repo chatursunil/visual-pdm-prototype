@@ -1,7 +1,8 @@
 const sql = require('mssql');
 const dbconfig = require('./dbconfig');
 
-const storedProc = 'PartNumberSuggestions';
+const storedProcItems = 'PartNumberSuggestions';
+const storedProcRevs = 'GetRevisionsForPart';
 
 // // Callback method
 // const getItemsFromRef = (prefix, callback) => {
@@ -9,7 +10,7 @@ const storedProc = 'PartNumberSuggestions';
 //     connectionPool.connect().then(() => {
 //         const request = new sql.Request(connectionPool);
 //         request.input('LikeValue', sql.VarChar(255), prefix);
-//         request.execute(storedProc).then((result) => {
+//         request.execute(storedProcItems).then((result) => {
 //             // console.log(result);
 //             callback(undefined, result.recordset);
 //         }).catch((err) => {
@@ -29,7 +30,7 @@ const getItemsFromRef = (prefix) => {
         connectionPool.connect().then(() => {
             const request = new sql.Request(connectionPool);
             request.input('LikeValue', sql.VarChar(255), prefix);
-            request.execute(storedProc).then((result) => {
+            request.execute(storedProcItems).then((result) => {
                 resolve(result);
             }).catch((err) => {
                 reject(err);
@@ -40,4 +41,21 @@ const getItemsFromRef = (prefix) => {
     });
 }
 
-module.exports = {getItemsFromRef};
+const getRevsForPart = (part) => {
+    return new Promise((resolve, reject) => {
+        const connectionPool = new sql.ConnectionPool(dbconfig);
+        connectionPool.connect().then(() => {
+            const request = new sql.Request(connectionPool);
+            request.input('Part', sql.VarChar(255), part);
+            request.execute(storedProcRevs).then((result) => {
+                resolve(result);
+            }).catch((err) => {
+                reject(err);
+            });
+        }).catch((err) => {
+            reject(err);
+        });
+    });
+}
+
+module.exports = {getItemsFromRef, getRevsForPart};
