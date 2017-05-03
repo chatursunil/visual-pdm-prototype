@@ -21,13 +21,15 @@ class Home extends React.Component{
             partNumber,
             revLetter
         });
+        // Also propagate this state to the parent component (Body.js)
+        this.props.setCurrentPartRevOnParent(partNumber, revLetter);
     }
 
     render() {
         let {partNumber, revLetter} = this.state;
         return(
             <div className="inputpartrev-container">
-                <div>{`Part=${this.state.partNumber}, Rev=${this.state.revLetter}`}</div>
+                {/*<div><b>Home:</b> {`Part=${this.state.partNumber}, Rev=${this.state.revLetter}`}</div>*/}
                 <div className="mdl-grid">
                     <div className="mdl-cell mdl-cell--4-col"></div>
                     <div className="mdl-cell mdl-cell--6-col">

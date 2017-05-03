@@ -1,7 +1,10 @@
 const express = require('express');
-const path = require('path');
+const mime = require('mime-types');
+// const path = require('path');
 
 const getItems = require('./get-items');
+const getFile = require('./get-file');
+
 const port = process.env.PORT || 9000;
 
 const app = express();
@@ -23,10 +26,37 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.get('/drawing', (req, res) => {
-    res.sendFile('12901951.F.PDF', {
-        root: 'G:/PDM/Draw'
-    });
+// Route for sending drawing file
+app.get('/drawing/:part/:rev', (req, res) => {
+    const part = req.params.part;
+    const rev = req.params.rev;
+    // res.sendFile('12901951.F.PDF', {
+    //     root: 'G:/PDM/Draw'
+    // });
+    if (part.length > 0 && rev.length > 0){
+        getItems.getDrawingFileName(part, rev).then((result) => {
+            // console.log(result.recordset[0].Object);
+            const fileName = result.recordset[0].Object;
+            if (fileName.length > 0) {
+                getFile.getFilePath(fileName).then((fileSpec) => {
+                    // console.log(filePath);
+                    if (fileSpec.length > 0){
+                        res.setHeader('content-type', mime.contentType(fileName));
+                        res.setHeader('content-disposition', 'inline; filename="' + fileName + '"');
+                        res.sendFile(fileSpec);
+                    } else {
+                        res.status(404).json([]);
+                    }
+                })
+            } else {
+                res.status(404).json([]);
+            }
+        }).catch((err) => {
+            res.status(404).json([]);
+        })
+    } else {
+        res.status(404).json([]);
+    }
 });
 
 // Route for returning partnumber and revs for the text input on the homepage.

@@ -3,6 +3,7 @@ const dbconfig = require('./dbconfig');
 
 const storedProcItems = 'PartNumberSuggestions';
 const storedProcRevs = 'GetRevisionsForPart';
+const storedProcDrawing = 'GetDrawingFileName';
 
 // // Callback method
 // const getItemsFromRef = (prefix, callback) => {
@@ -58,4 +59,22 @@ const getRevsForPart = (part) => {
     });
 }
 
-module.exports = {getItemsFromRef, getRevsForPart};
+const getDrawingFileName = (part, rev) => {
+    return new Promise((resolve, reject) => {
+        const connectionPool = new sql.ConnectionPool(dbconfig);
+        connectionPool.connect().then(() => {
+            const request = new sql.Request(connectionPool);
+            request.input('Part', sql.VarChar(255), part);
+            request.input('Rev', sql.VarChar(255), rev);
+            request.execute(storedProcDrawing).then((result) => {
+                resolve(result);
+            }).catch((err) => {
+                reject(err);
+            });
+        }).catch((err) => {
+            reject(err);
+        });
+    });    
+}
+
+module.exports = {getItemsFromRef, getRevsForPart, getDrawingFileName};

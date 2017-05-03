@@ -1,6 +1,7 @@
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
 import renderHTML from 'react-render-html';
+import {withRouter} from 'react-router-dom';
 
 import '../styles/InputPartRev.css';
 import downArrow from '../images/down_arrow_48.png';
@@ -123,6 +124,7 @@ class InputPartRev extends React.Component {
     };
 
     // this.lastRequestId = null;
+    this.handleGoButtonClick = this.handleGoButtonClick.bind(this);
   }
   
   loadSuggestions(value) {
@@ -186,7 +188,7 @@ class InputPartRev extends React.Component {
       e.preventDefault();
       e.stopPropagation();
       this.handlePartNumberConfirmed(this.state.value);
-      this.refs.revInput.focus();
+      // this.refs.revInput.focus();
     }
   }
 
@@ -198,6 +200,7 @@ class InputPartRev extends React.Component {
       this.propagatePartRevToParents();
     });
     this.loadRevs(partNumber);
+    this.refs.btnGo.focus();
   }
 
   propagatePartRevToParents = () => {
@@ -259,6 +262,13 @@ class InputPartRev extends React.Component {
     return retText;
   }
 
+  // Go Button related code
+  handleGoButtonClick = (e) => {
+    e.preventDefault();
+    // this.context.router.transitionTo(`/drawing/${this.state.partNumber}/${this.state.revLetter}`)
+    this.props.history.push(`/drawing/${this.state.partNumber}/${this.state.revLetter}`);
+  }
+
   render() {
     const { value, suggestions} = this.state;
     const inputProps = {
@@ -298,9 +308,19 @@ class InputPartRev extends React.Component {
                 {renderHTML(this.renderRevOptions())}
             </select>
           </div>
+
+          <div style={{float: 'left', marginLeft: '20px', lineHeight: '40px'}}>
+            <button 
+              ref="btnGo"
+              onClick={this.handleGoButtonClick} 
+              className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                Go
+            </button>            
+          </div>  
+
       </div>
     );
   }
 }
 
-export default InputPartRev;
+export default withRouter(InputPartRev);
