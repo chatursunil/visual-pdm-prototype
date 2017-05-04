@@ -213,6 +213,7 @@ class InputPartRev extends React.Component {
     this.setState({revLetter: e.target.value}, () => {
       this.propagatePartRevToParents();
     });
+    this.refs.btnGo.focus();
   }
 
   makeSelectDisabled = (arg) => {

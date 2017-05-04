@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 
+import * as constants from './GlobalConstants';
 import '../styles/Drawing.css';
 
 class Drawing extends Component{
     constructor(props) {
-        super(props)
+        super(props);
         this.state={
             partNumber: this.props.match.params.part,
             revLetter: this.props.match.params.rev
@@ -13,7 +14,7 @@ class Drawing extends Component{
     render() {
         return(
             <div className="drawing-container">
-                <iframe src={`http://n-cdt-sc:9000/drawing/${this.state.partNumber}/${this.state.revLetter}`} frameBorder="0"></iframe>
+                <iframe src={`${constants.BASE_SERVER_URL}/drawing/${this.state.partNumber}/${this.state.revLetter}`} frameBorder="0"></iframe>
             </div>
         );
     }
