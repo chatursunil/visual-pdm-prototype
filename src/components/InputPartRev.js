@@ -3,12 +3,16 @@ import Autosuggest from 'react-autosuggest';
 import renderHTML from 'react-render-html';
 import {withRouter} from 'react-router-dom';
 
+import * as constants from './GlobalConstants';
+
 import '../styles/InputPartRev.css';
 import downArrow from '../images/down_arrow_48.png';
 
-const server_url = 'http://n-cdt-sc:9000';
-const fetch_url_items = server_url + '/suggestitems';
-const fetch_url_revs = server_url + '/revsforpart';
+// const server_url = 'http://n-cdt-sc:9000';
+// const fetch_url_items = server_url + '/suggestitems';
+// const fetch_url_revs = server_url + '/revsforpart';
+const fetch_url_items = constants.BASE_SERVER_URL + '/suggestitems';
+const fetch_url_revs = constants.BASE_SERVER_URL + '/revsforpart';
 
 /* ---------- */
 /*    Data    */

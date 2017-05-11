@@ -39,10 +39,10 @@ class Body extends React.Component{
                 <Switch>
                     {/*<Route exact path='/' component={Home} />*/}
                     <Route exact path='/' render={(props) => <Home setCurrentPartRevOnParent={this.setCurrentPartRev.bind(this)} {...props} />} />
-                    <Route path='/drawing/:part/:rev' component={Drawing} />
-                    <Route path='/parameters/:part/:rev' component={Parameters} />
-                    <Route path='/bom/:part/:rev' component={Bom} />
-                    <Route path='/processplan/:part/:rev' component={Processplan} />
+                    <Route path='/drawing/:part/:rev' render={(props) => <Drawing setCurrentPartRevOnParent={this.setCurrentPartRev.bind(this)} {...props} />} />
+                    <Route path='/parameters/:part/:rev' render={(props) => <Parameters setCurrentPartRevOnParent={this.setCurrentPartRev.bind(this)} {...props} />} />
+                    <Route path='/bom/:part/:rev' render={(props) => <Bom setCurrentPartRevOnParent={this.setCurrentPartRev.bind(this)} {...props} />} />
+                    <Route path='/processplan/:part/:rev' render={(props) => <Processplan setCurrentPartRevOnParent={this.setCurrentPartRev.bind(this)} {...props} />} />
                     <Route path='/other/:part/:rev' component={Other} />
                 </Switch>
             </div>

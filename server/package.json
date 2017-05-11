@@ -18,6 +18,7 @@
   "author": "Sunil Chaturvedi",
   "license": "ISC",
   "dependencies": {
+    "dateformat": "^2.0.0",
     "mime-types": "^2.1.15",
     "mssql": "^4.0.4"
   }

@@ -97,6 +97,31 @@ app.get('/processplan/:part/:rev', (req, res) => {
     }
 });
 
+// Route for the returning Parameters Data for the given part and rev
+app.get('/parameters/:part/:rev', (req, res) => {
+    const part = req.params.part.trim();
+    const rev = req.params.rev.trim();
+    if (part.length > 0 && rev.length > 0) {
+        getItems.getItemParameters(part, rev).then((result) => {
+            res.status(200).json(result.recordset);
+        }).catch((err) => {
+            res.status(500).json([]);
+        })
+    }
+});
+
+// Route for returning BOM data for the given part
+app.get('/bom/:part/:rev', (req, res) => {
+    const part = req.params.part.trim();
+    if (part.length > 0) {
+        getItems.getBomRecordsTree(part).then((result) => {
+            res.status(200).json(result);
+        }).catch((err) => {
+            res.status(500).json([]);
+        });
+    }
+});
+
 // Route for returning partnumber and revs for the text input on the homepage.
 app.get('/suggestitems/:prefix', (req, res) => {
     const prefix = req.params.prefix;
@@ -113,7 +138,7 @@ app.get('/suggestitems/:prefix', (req, res) => {
     getItems.getItemsFromRef(prefix).then((result) => {
         res.status(200).json(result.recordset);
     }).catch((err) => {
-        console.log('Error retrieving records from database', err);
+        // console.log('Error retrieving records from database', err);
         res.status(500).json([]);
     });
 })

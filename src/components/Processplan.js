@@ -10,7 +10,14 @@ class Processplan extends Component {
             partNumber: this.props.match.params.part,
             revLetter: this.props.match.params.rev
         }
+        this.propagatePartRevToParents();
     }
+
+    propagatePartRevToParents = () => {
+        // console.log(`this.state.partNumber=${this.state.partNumber}`);
+        this.props.setCurrentPartRevOnParent(this.state.partNumber, this.state.revLetter);
+    }
+
     render() {
         return(
             <div className="plan-container">

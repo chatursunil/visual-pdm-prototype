@@ -80,7 +80,7 @@ class Header extends Component {
                     </nav>
                 </div>
 
-                <main className="mdl-layout__content">
+                <main className="mdl-layout__content" style={{height: '100%', overflow: 'hidden'}}>
                     <div className="page-content">
                         <Body setCurrentPartRevOnParent={this.setCurrentPartRev.bind(this)} />
                     </div>

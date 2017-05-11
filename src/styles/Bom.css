@@ -1,0 +1,9 @@
+.bom-container {
+    width: 100%;
+    height: 100%;
+    /*margin: auto;*/
+}
+.ag-group-cell {
+    font-style: normal !important;
+    /*font-weight: bold;*/
+}
