@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 import * as constants from './GlobalConstants';
-import '../styles/ProcessPlan.css';
+import '../styles/Processplan.css';
 
 class Processplan extends Component {
     constructor(props) {
@@ -10,12 +10,15 @@ class Processplan extends Component {
             partNumber: this.props.match.params.part,
             revLetter: this.props.match.params.rev
         }
-        this.propagatePartRevToParents();
     }
 
     propagatePartRevToParents = () => {
         // console.log(`this.state.partNumber=${this.state.partNumber}`);
         this.props.setCurrentPartRevOnParent(this.state.partNumber, this.state.revLetter);
+    }
+
+    componentWillMount(){
+        this.propagatePartRevToParents();
     }
 
     render() {

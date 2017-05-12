@@ -47,7 +47,9 @@ app.get('/drawing/:part/:rev', (req, res) => {
                     } else {
                         res.status(404).json([]);
                     }
-                })
+                }).catch((err) => {
+                    res.status(500).send(`The associated file '${fileName}' for this part/rev could not be found in the search path.`);
+                });
             } else {
                 // res.status(404).json([]);
                 res.status(200).send('There is no process plan associated for this part and rev.');
@@ -61,14 +63,45 @@ app.get('/drawing/:part/:rev', (req, res) => {
     }
 });
 
+// Route for sending Auxiliary file
+app.get('/auxiliary/:part/:rev', (req, res) => {
+    const part = req.params.part;
+    const rev = req.params.rev;
+    if (part.length > 0 && rev.length > 0) {
+        getItems.getAuxFileName(part, rev).then((result) => {
+            // console.log(result.recordset[0].Object);
+            const fileName = result.recordset[0].Object;
+            if (fileName.length > 0) {
+                getFile.getAuxFileSpec(fileName).then((fileSpec) => {
+                    // console.log(filePath);
+                    if (fileSpec.length > 0){
+                        res.setHeader('content-type', mime.contentType(fileName));
+                        res.setHeader('content-disposition', 'inline; filename="' + fileName + '"');
+                        res.sendFile(fileSpec);
+                    } else {
+                        res.status(404).json([]);
+                    }
+                }).catch((err) => {
+                    res.status(500).send(`The associated file '${fileName}' for this part/rev could not be found in the search path.`);
+                });
+            } else {
+                // res.status(404).json([]);
+                res.status(200).send('There is no Auxiliary file associated for this part and rev.');
+            }
+        }).catch((err) => {
+            // res.status(404).json([]);
+            res.status(200).send('There is no Auxiliary file associated for this part and rev.');
+        })
+    } else {
+        res.status(404).json([]);
+        
+    }
+});
+
 // Route for sending Process Plan file
 app.get('/processplan/:part/:rev', (req, res) => {
     const part = req.params.part;
     const rev = req.params.rev;
-    // console.log(`part=${part}`);
-    // res.sendFile('12901951.F.PDF', {
-    //     root: 'G:/PDM/Draw'
-    // });
     if (part.length > 0 && rev.length > 0){
         getItems.getPlanFileName(part, rev).then((result) => {
             // console.log(result.recordset[0].Object);
@@ -83,7 +116,9 @@ app.get('/processplan/:part/:rev', (req, res) => {
                     } else {
                         res.status(404).json([]);
                     }
-                })
+                }).catch((err) => {
+                    res.status(500).send(`The associated file '${fileName}' for this part/rev could not be found in the search path.`);
+                });
             } else {
                 // res.status(404).json([]);
                 res.status(200).send('There is no process plan associated for this part and rev.');

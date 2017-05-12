@@ -5,6 +5,7 @@ import Home from './Home';
 import Drawing from './Drawing';
 import Parameters from './Parameters';
 import Bom from './Bom';
+import Auxiliary from './Auxiliary';
 import Processplan from './Processplan';
 import Other from './Other';
 
@@ -42,6 +43,7 @@ class Body extends React.Component{
                     <Route path='/drawing/:part/:rev' render={(props) => <Drawing setCurrentPartRevOnParent={this.setCurrentPartRev.bind(this)} {...props} />} />
                     <Route path='/parameters/:part/:rev' render={(props) => <Parameters setCurrentPartRevOnParent={this.setCurrentPartRev.bind(this)} {...props} />} />
                     <Route path='/bom/:part/:rev' render={(props) => <Bom setCurrentPartRevOnParent={this.setCurrentPartRev.bind(this)} {...props} />} />
+                    <Route path='/auxiliary/:part/:rev' render={(props) => <Auxiliary setCurrentPartRevOnParent={this.setCurrentPartRev.bind(this)} {...props} />} />
                     <Route path='/processplan/:part/:rev' render={(props) => <Processplan setCurrentPartRevOnParent={this.setCurrentPartRev.bind(this)} {...props} />} />
                     <Route path='/other/:part/:rev' component={Other} />
                 </Switch>

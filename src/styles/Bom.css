@@ -7,3 +7,14 @@
     font-style: normal !important;
     /*font-weight: bold;*/
 }
+/*Following css is for adding a border on the last row of the grid*/
+/*.ag-footer-cell-entire-row{
+    border-bottom: solid 1px black !important;
+}
+
+.ui-grid-row:last-child > div > div > div {
+    border-bottom: solid 2px red !important;
+}
+.ui-grid-row > div > div > div:last-child {
+    border-right: solid 2px red;
+}*/

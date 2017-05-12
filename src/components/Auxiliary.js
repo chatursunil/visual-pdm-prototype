@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 
 import * as constants from './GlobalConstants';
-import '../styles/Drawing.css';
+import '../styles/Auxiliary.css';
 
-class Drawing extends Component{
-    constructor(props) {
+class Auxiliary extends React.Component{
+    constructor(props){
         super(props);
         this.state={
             partNumber: this.props.match.params.part,
@@ -17,17 +17,17 @@ class Drawing extends Component{
         this.props.setCurrentPartRevOnParent(this.state.partNumber, this.state.revLetter);
     }
 
-    componentWillMount() {
+    componentWillMount(){
         this.propagatePartRevToParents();
     }
 
     render() {
         return(
-            <div className="drawing-container">
-                <iframe src={`${constants.BASE_SERVER_URL}/drawing/${this.state.partNumber}/${this.state.revLetter}`} frameBorder="0"></iframe>
+            <div className="aux-container">
+                <iframe src={`${constants.BASE_SERVER_URL}/auxiliary/${this.state.partNumber}/${this.state.revLetter}`} frameBorder="0"></iframe>
             </div>
         );
     }
 }
 
-export default Drawing;
+export default Auxiliary;

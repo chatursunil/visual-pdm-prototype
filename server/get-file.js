@@ -31,6 +31,33 @@ const getDrawingFileSpec = (fileName) => {
     });
 }
 
+const aux_paths_spec = 'g:/pdm/auxil/chi;g:/pdm/auxil;g:/pdm/auxil/peo;g:/pdm/auxil/chi/deviation;g:/pdm/auxil/peo/deviation;i:/psr/active;g:/pdm/draw;i:/dcr/filed;i:/eb;i:/sketches;i:/standard/mfgstd/approved;g:/pdm/plan/chi/copics;g:/pdm/plan/chi/cc;i:/E-DOCS;g:/pdm/plan/chi/Ep_Plans;g:/pdm/draw/bgm;g:/pdm/auxil/chi/service;g:/pdm/auxil/peo/qa documents;G:/PDM/Auxil/Chi/EDB Brake Tests';
+const getAuxFileSpec = (fileName) => {
+    return new Promise((resolve, reject) => {
+        // make the search paths array
+        const searchPaths = aux_paths_spec.split(';').map((path) => {
+            return path.trim();
+        });
+
+        let foundFile = false;
+        for (let path of searchPaths) {
+            try {
+                fileSpec = `${path}/${fileName}`
+                fs.accessSync(fileSpec, fs.F_OK)
+                foundFile = true
+                // resolve(`{root: '${path}'}`);
+                resolve(fileSpec);
+                break;
+            } catch (error) {
+                foundFile = false;
+            }            
+        }
+        if (!foundFile) {
+            reject('File not found');
+        }
+    });
+}
+
 const plan_paths_spec = 'g:/pdm/plan/chi;g:/pdm/plan/chi/copics;g:/pdm/plan/chi/ep_plans;g:/pdm/plan/peo;g:/pdm/auxil/peo';
 const getPlanFileSpec = (fileName) => {
     return new Promise((resolve, reject) => {
@@ -58,4 +85,4 @@ const getPlanFileSpec = (fileName) => {
     });
 }
 
-module.exports = {getDrawingFileSpec, getPlanFileSpec};
+module.exports = {getDrawingFileSpec, getAuxFileSpec, getPlanFileSpec};

@@ -116,6 +116,13 @@ class Bom extends React.Component{
         }        
     }
 
+    getRowStyle(params) {
+        // const rowIndex = params.node.rowIndex;
+        // const maxRows = params.api.rowModel.rowsToDisplay.length;
+        // console.log(params);
+        // console.log('lastChild=' + params.node.lastChild);
+    }
+
     render() {
         return(
             <div className="ag-fresh bom-container">
@@ -127,6 +134,7 @@ class Bom extends React.Component{
                     onGridReady={this.onGridReady.bind(this)}
                     getNodeChildDetails={this.getNodeChildDetails.bind(this)}
                     onGridSizeChanged={this.onGridSizeChanged.bind(this)}
+                    getRowStyle={this.getRowStyle.bind(this)}
                 />
             </div>
         );

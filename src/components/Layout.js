@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 import Body from './Body';
 
 import '../styles/Layout.css';
@@ -38,7 +38,7 @@ class Header extends Component {
                 <header className="mdl-layout__header mdl-layout__header--scroll">
                     <div className="mdl-layout__header-row">
                         {/*<!-- Title -->*/}
-                        <Link to="/" className="mdl-navigation__link"><span className="mdl-layout-title">Visual PDM</span></Link>
+                        <NavLink to="/" className="mdl-navigation__link"><span className="mdl-layout-title">Visual PDM</span></NavLink>
                         {/*<!-- Add spacer, to align navigation to the right -->*/}
                         <div className="mdl-layout-spacer"></div>
                         <div>{this.state.titleValue}</div>
@@ -46,16 +46,17 @@ class Header extends Component {
                         {/*<!-- Navigation -->*/}
                         <nav className="mdl-navigation">
                             {/*<Link to="/" className="mdl-navigation__link">Home</Link>*/}
-                            <Link to="/" className="mdl-navigation__link">
+                            <NavLink to="/" className="mdl-navigation__link">
                                 <label className="mdl-button mdl-js-button mdl-button--icon">
                                 <i className="material-icons">search</i>
                                 </label>                            
-                            </Link>
-                            <Link to={this.getRouteLinkText('/drawing')} className="mdl-navigation__link">Drawing</Link>
-                            <Link to={this.getRouteLinkText('/parameters')} className="mdl-navigation__link">Parameters</Link>
-                            <Link to={this.getRouteLinkText('/bom')} className="mdl-navigation__link">BOM</Link>
-                            <Link to={this.getRouteLinkText('/processplan')} className="mdl-navigation__link">Process Plan</Link>
-                            <Link to={this.getRouteLinkText('/other')} className="mdl-navigation__link">Other</Link>
+                            </NavLink>
+                            <NavLink to={this.getRouteLinkText('/drawing')} className="mdl-navigation__link" activeClassName="active-link">Drawing</NavLink>
+                            <NavLink to={this.getRouteLinkText('/parameters')} className="mdl-navigation__link" activeClassName="active-link">Parameters</NavLink>
+                            <NavLink to={this.getRouteLinkText('/bom')} className="mdl-navigation__link" activeClassName="active-link">BOM</NavLink>
+                            <NavLink to={this.getRouteLinkText('/auxiliary')} className="mdl-navigation__link" activeClassName="active-link">Auxiliary</NavLink>
+                            <NavLink to={this.getRouteLinkText('/processplan')} className="mdl-navigation__link" activeClassName="active-link">Process Plan</NavLink>
+                            <NavLink to={this.getRouteLinkText('/other')} className="mdl-navigation__link" activeClassName="active-link">Other</NavLink>
                             {/*<a className="mdl-navigation__link" href="">Link</a>
                             <a className="mdl-navigation__link" href="">Link</a>
                             <a className="mdl-navigation__link" href="">Link</a>
@@ -64,19 +65,20 @@ class Header extends Component {
                     </div>
                 </header>
                 <div className="mdl-layout__drawer">
-                    <Link to="/" className="mdl-navigation__link"><span className="mdl-layout-title">Visual PDM</span></Link>
+                    <NavLink to="/" className="mdl-navigation__link"><span className="mdl-layout-title">Visual PDM</span></NavLink>
                     <nav className="mdl-navigation">
                         {/*<Link to="/" className="mdl-navigation__link">Home</Link>*/}
-                        <Link to="/" className="mdl-navigation__link">
+                        <NavLink to="/" className="mdl-navigation__link">
                             <label className="mdl-button mdl-js-button mdl-button--icon">
                             <i className="material-icons">search</i>
                             </label>                            
-                        </Link>
-                        <Link to="/drawing" className="mdl-navigation__link">Drawing</Link>
-                        <Link to="/parameters" className="mdl-navigation__link">Parameters</Link>
-                        <Link to="/bom" className="mdl-navigation__link">BOM</Link>
-                        <Link to="/processplan" className="mdl-navigation__link">Process Plan</Link>
-                        <Link to="/other" className="mdl-navigation__link">Other</Link>
+                        </NavLink>
+                        <NavLink to={this.getRouteLinkText('/drawing')} className="mdl-navigation__link" activeClassName="active-link">Drawing</NavLink>
+                        <NavLink to={this.getRouteLinkText('/parameters')} className="mdl-navigation__link" activeClassName="active-link">Parameters</NavLink>
+                        <NavLink to={this.getRouteLinkText('/bom')} className="mdl-navigation__link" activeClassName="active-link">BOM</NavLink>
+                        <NavLink to={this.getRouteLinkText('/auxiliary')} className="mdl-navigation__link" activeClassName="active-link">Auxiliary</NavLink>
+                        <NavLink to={this.getRouteLinkText('/processplan')} className="mdl-navigation__link" activeClassName="active-link">Process Plan</NavLink>
+                        <NavLink to={this.getRouteLinkText('/other')} className="mdl-navigation__link" activeClassName="active-link">Other</NavLink>
                     </nav>
                 </div>
 
