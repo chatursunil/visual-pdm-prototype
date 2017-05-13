@@ -26,6 +26,10 @@ app.use(function(req, res, next) {
     next();
 });
 
+app.get('/', (req, res) => {
+    res.status(200).send('This REST API service is ready serve.');
+});
+
 // Route for sending drawing file
 app.get('/drawing/:part/:rev', (req, res) => {
     const part = req.params.part;

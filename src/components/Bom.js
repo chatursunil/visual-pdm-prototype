@@ -117,10 +117,9 @@ class Bom extends React.Component{
     }
 
     getRowStyle(params) {
-        // const rowIndex = params.node.rowIndex;
-        // const maxRows = params.api.rowModel.rowsToDisplay.length;
-        // console.log(params);
-        // console.log('lastChild=' + params.node.lastChild);
+        if (params.node.rowIndex === params.api.rowModel.rowsToDisplay.length - 1) {
+            return {borderBottom: 'solid 1px #808080'};
+        }   
     }
 
     render() {

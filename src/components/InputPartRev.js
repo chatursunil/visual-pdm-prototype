@@ -133,7 +133,7 @@ class InputPartRev extends React.Component {
   
   loadSuggestions(value) {
     // We will only fetch items from server if the value length is greater than 3
-    if (value.trim().length <= 3) {
+    if (value.trim().length === 0) {
       this.setState({suggestions: []});
       return;
     }

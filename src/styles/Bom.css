@@ -18,3 +18,7 @@
 .ui-grid-row > div > div > div:last-child {
     border-right: solid 2px red;
 }*/
+
+/*table tbody tr:last-child td {
+    border-bottom:solid 2px red !important;
+}*/
