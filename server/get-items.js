@@ -4,6 +4,7 @@ const dbconfig = require('./dbconfig');
 
 const storedProcItems = 'PartNumberSuggestions';
 const storedProcRevs = 'GetRevisionsForPart';
+const storedProcDefaultRev = 'GetDefaultRevForPart';
 const storedProcDrawing = 'GetDrawingFileName';
 const storedProcAux = 'GetAuxFileName';
 const storedProcPlan = 'GetPlanFileName';
@@ -60,6 +61,29 @@ const getRevsForPart = (part) => {
             });
         }).catch((err) => {
             reject(err);
+        });
+    });
+}
+
+const getDefaultRevForPart = (part) => {
+    return new Promise((resolve, reject) => {
+        const connectionPool = new sql.ConnectionPool(dbconfig);
+        connectionPool.connect().then(() => {
+            const request = new sql.Request(connectionPool);
+            request.input('Part', sql.VarChar(255), part);
+            request.execute(storedProcDefaultRev).then((result) => {
+                if (result.recordset.length > 0){
+                    // console.log(result);
+                    // console.log('result.recordset[0].REV=' + result.recordset[0].REV);
+                    resolve(result.recordset[0].REV);
+                } else {
+                    reject('');
+                }
+            }).catch((err) => {
+                reject('');
+            });
+        }).catch((err) => {
+            reject('');
         });
     });
 }
@@ -254,6 +278,7 @@ const isBomLeafNode = (bomFlat, component) => {
 module.exports = {
     getItemsFromRef, 
     getRevsForPart, 
+    getDefaultRevForPart,
     getDrawingFileName, 
     getAuxFileName,
     getPlanFileName,

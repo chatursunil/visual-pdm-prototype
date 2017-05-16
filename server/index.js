@@ -27,16 +27,31 @@ app.use(function(req, res, next) {
 });
 
 app.get('/', (req, res) => {
-    res.status(200).send('This REST API service is ready serve.');
+    res.status(200).send('This REST API service is ready serve on <b>' + req.headers.host + '</b>');
 });
 
+// ***************************************************
 // Route for sending drawing file
-app.get('/drawing/:part/:rev', (req, res) => {
+// ***************************************************
+app.get('/drawing/:part/:rev?', (req, res) => {
     const part = req.params.part;
-    const rev = req.params.rev;
+    let rev = req.params.rev || '';
     // res.sendFile('12901951.F.PDF', {
     //     root: 'G:/PDM/Draw'
     // });
+    if (rev.length === 0) {
+        getItems.getDefaultRevForPart(part).then((revLetter) => {
+            rev = revLetter;
+            // console.log('rev=' + rev);
+            handleDrawingGetRoute(res, part, rev);
+        });
+    } else {
+        handleDrawingGetRoute(res, part, rev);
+    }
+    // console.log('rev=' + rev);
+});
+
+const handleDrawingGetRoute = (res, part, rev) => {
     if (part.length > 0 && rev.length > 0){
         getItems.getDrawingFileName(part, rev).then((result) => {
             // console.log(result.recordset[0].Object);
@@ -64,8 +79,9 @@ app.get('/drawing/:part/:rev', (req, res) => {
         })
     } else {
         res.status(404).json([]);
-    }
-});
+    }    
+}
+// *********************** End Drawing Route Handler ***************
 
 // Route for sending Auxiliary file
 app.get('/auxiliary/:part/:rev', (req, res) => {
@@ -136,18 +152,32 @@ app.get('/processplan/:part/:rev', (req, res) => {
     }
 });
 
+// *********************************************************************
 // Route for the returning Parameters Data for the given part and rev
+// *********************************************************************
 app.get('/parameters/:part/:rev', (req, res) => {
     const part = req.params.part.trim();
-    const rev = req.params.rev.trim();
+    const rev = req.params.rev.trim() || '';
+    if (rev.length === 0) {
+        getItems.getDefaultRevForPart(part).then((revLetter) => {
+            rev = revLetter;
+            handleParametersGetRoute(res, part, rev);
+        });
+    } else {
+        handleParametersGetRoute(res, part, rev);
+    }
+});
+
+const handleParametersGetRoute = (res, part, rev) => {
     if (part.length > 0 && rev.length > 0) {
         getItems.getItemParameters(part, rev).then((result) => {
             res.status(200).json(result.recordset);
         }).catch((err) => {
             res.status(500).json([]);
         })
-    }
-});
+    }    
+}
+// ***************** End Parameters Route Handler *********************
 
 // Route for returning BOM data for the given part
 app.get('/bom/:part/:rev', (req, res) => {
@@ -180,7 +210,7 @@ app.get('/suggestitems/:prefix', (req, res) => {
         // console.log('Error retrieving records from database', err);
         res.status(500).json([]);
     });
-})
+});
 
 // Route for returning all available revs for the selected part
 app.get('/revsforpart/:part', (req, res) => {
@@ -191,7 +221,17 @@ app.get('/revsforpart/:part', (req, res) => {
         console.log('Error getting revs for part ' + part, err);
         res.status(500).json([]);
     });
-})
+});
+
+//  Route for getting the current Rev for a part
+app.get('/defaultrevforpart/:part', (req, res) => {
+    const part = req.params.part;
+    getItems.getDefaultRevForPart(part).then(rev => {
+        res.status(200).json({rev});
+    }).catch((err) => {
+        res.status(500).json([]);
+    });
+});
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

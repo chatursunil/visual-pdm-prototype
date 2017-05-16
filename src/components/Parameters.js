@@ -27,7 +27,7 @@ class Parameters extends React.Component{
         super(props);
         this.state = {
             partNumber: this.props.match.params.part,
-            revLetter: this.props.match.params.rev,
+            revLetter: this.props.match.params.rev || '',
             rowData: []
         }
     }

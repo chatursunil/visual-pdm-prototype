@@ -22,9 +22,33 @@ class Header extends Component {
         this.setState({
             partNumber,
             revLetter,
-            titleValue: (partNumber.length > 0 && revLetter.length > 0) ? `${partNumber} (${revLetter})` : '',
-            routeExtension: (partNumber.length > 0 && revLetter.length > 0) ? `/${partNumber}/${revLetter}` : ''
+            // titleValue: (partNumber.length > 0 && revLetter.length > 0) ? `${partNumber} (${revLetter})` : '',
+            titleValue: this.getTitleValue(partNumber, revLetter),
+            // routeExtension: (partNumber.length > 0 && revLetter.length > 0) ? `/${partNumber}/${revLetter}` : ''
+            routeExtension: this.getRouteExtension(partNumber, revLetter)
         });
+    }
+
+    getTitleValue(part, rev) {
+        let retValue = '';
+        if (part.length > 0) {
+            retValue = part;
+        }
+        if (part.length > 0 && rev.length > 0) {
+            retValue += '(' + rev + ')';
+        }
+        return retValue;
+    }
+
+    getRouteExtension(part, rev) {
+        let retValue = '';
+        if (part.length > 0) {
+            retValue = '/' + part;
+        }
+        if (part.length > 0 && rev.length > 0) {
+            retValue += '/' + rev;
+        }
+        return retValue;
     }
 
     getRouteLinkText(baseRoute) {

@@ -3,12 +3,14 @@ import React, {Component} from 'react';
 import * as constants from './GlobalConstants';
 import '../styles/Drawing.css';
 
+const fetch_url_defaultrev = constants.BASE_SERVER_URL + '/defaultrevforpart';
+
 class Drawing extends Component{
     constructor(props) {
         super(props);
         this.state={
             partNumber: this.props.match.params.part,
-            revLetter: this.props.match.params.rev
+            revLetter: this.props.match.params.rev || ''
         }
     }
 
@@ -18,7 +20,25 @@ class Drawing extends Component{
     }
 
     componentWillMount() {
+        if (this.state.revLetter.length === 0) {
+            this.getDefaultRev(this.state.partNumber);
+        }
         this.propagatePartRevToParents();
+    }
+
+    getDefaultRev(part) {
+        fetch(`${fetch_url_defaultrev}/${part}`)
+        .then((res) => {
+            if (res.ok) {
+                res.json().then((data) => {
+                    this.setState({revLetter: data.rev}, () => {
+                        this.propagatePartRevToParents();
+                    });
+                })
+            }
+        }).catch(err => {
+            return;
+        });
     }
 
     render() {
