@@ -7,6 +7,16 @@
     font-style: normal !important;
     /*font-weight: bold;*/
 }
+
+a {
+    text-decoration: none;
+}
+a:link {
+    color: darkblue;
+}
+a:visited {
+    color: darkblue;
+}
 /*Following css is for adding a border on the last row of the grid*/
 /*.ag-footer-cell-entire-row{
     border-bottom: solid 1px black !important;

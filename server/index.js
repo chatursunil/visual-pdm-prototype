@@ -55,7 +55,7 @@ const handleDrawingGetRoute = (res, part, rev) => {
     if (part.length > 0 && rev.length > 0){
         getItems.getDrawingFileName(part, rev).then((result) => {
             // console.log(result.recordset[0].Object);
-            const fileName = result.recordset[0].Object;
+            const fileName = result.recordset[0].Object || '';
             if (fileName.length > 0) {
                 getFile.getDrawingFileSpec(fileName).then((fileSpec) => {
                     // console.log(filePath);
@@ -71,11 +71,11 @@ const handleDrawingGetRoute = (res, part, rev) => {
                 });
             } else {
                 // res.status(404).json([]);
-                res.status(200).send('There is no process plan associated for this part and rev.');
+                res.status(200).send('There is no drawing associated for this part and rev.');
             }
         }).catch((err) => {
             // res.status(404).json([]);
-            res.status(200).send('There is no process plan associated for this part and rev.');
+            res.status(200).send('There is no drawing associated for this part and rev.');
         })
     } else {
         res.status(404).json([]);

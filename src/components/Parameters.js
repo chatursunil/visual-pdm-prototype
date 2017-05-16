@@ -6,6 +6,8 @@ import 'ag-grid/dist/styles/theme-fresh.css';
 import '../styles/Parameters.css';
 import * as constants from './GlobalConstants';
 
+const fetch_url_defaultrev = constants.BASE_SERVER_URL + '/defaultrevforpart';
+
 // Note that I am decalring the ColumnDef outside the class.
 // I had to do this to make the PART/REV rows uneditable. I could not pass the params argument inside the react class
 // Also I am no longer saving the column definition in the state.
@@ -33,7 +35,6 @@ class Parameters extends React.Component{
     }
 
     propagatePartRevToParents = () => {
-        // console.log(`this.state.partNumber=${this.state.partNumber}`);
         this.props.setCurrentPartRevOnParent(this.state.partNumber, this.state.revLetter);
     }
 

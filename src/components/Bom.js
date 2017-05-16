@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import {AgGridReact} from 'ag-grid-react';
 import 'ag-grid/dist/styles/ag-grid.css';
 import 'ag-grid/dist/styles/theme-fresh.css';
@@ -37,7 +38,9 @@ function innerCellRenderer(params) {
     } else {
         image = fileImage;
     }
-    return '<img src="' + image + '" style="padding-left: 4px;" /> ' + params.data.COMPONENT;
+    let cellValue = '<img src="' + image + '" style="padding-left: 4px;" /> '
+    cellValue  += `<a href="/drawing/${params.data.COMPONENT}">${params.data.COMPONENT}</a>`;
+    return cellValue;
 }
 
 class Bom extends React.Component{
